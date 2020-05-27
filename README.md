@@ -11,7 +11,7 @@ The sensor can be purchased on AliExpress for example
 * Enables sensor to send door and battery state via MQTT 
 * Configuration of connection and device parameters via web interface
 ## General way of working with this firmware
-* If sensor is activated by door opening/closing (by magnet), the device will connect to MQTT broker and sends the state once. Delay is around 3-4 seconds
+* If sensor is activated by door opening/closing (by magnet), the device will connect to MQTT broker and sends the state once. Delay is around 4-6 seconds
 * For configuration, hold the reset button until the LED blinks. Then the sensor stays on for around 60 seconds. If no settings found, it will create a Wifi AcessPoint. Otherwise it will connect to the existing Wifi. A web interface can be called for configuration.
 ## Installation
 To install the firmware, follow instructions here:  
