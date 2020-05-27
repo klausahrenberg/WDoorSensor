@@ -10,6 +10,9 @@ The sensor can be purchased on AliExpress for example
 * No Tuya cloud connection anymore
 * Enables sensor to send door and battery state via MQTT 
 * Configuration of connection and device parameters via web interface
+## General way of working with this firmware
+* If sensor is activated by door opening/closing (by magnet), the device will connect to MQTT broker and sends the state once. Delay is around 3-4 seconds
+* For configuration, hold the reset button until the LED blinks. Then the sensor stays on for around 60 seconds. If no settings found, it will create a Wifi AcessPoint. Otherwise it will connect to the existing Wifi. A web interface can be called for configuration.
 ## Installation
 To install the firmware, follow instructions here:  
 https://github.com/klausahrenberg/WDoorSensor/blob/master/Flashing.md
@@ -17,8 +20,8 @@ https://github.com/klausahrenberg/WDoorSensor/blob/master/Flashing.md
 After installation/flashing of firmware, disconnect all connections from programmer and insert the batteries:
 * Hold reset button for 5 sec until red LED starts Flashing
 * Now you have 60 seconds to configure... If you need more time, move the magnet during configuration.
-* Look for wifi AP 'DoorSensor...'
-* Configure Wifi-Settings
+* Look for wifi AP 'DoorSensor...', Password '12345678'
+* Configure Wifi-Settings under ```http://192.168.4.1```
 ## Json structure
 ```json
 {
