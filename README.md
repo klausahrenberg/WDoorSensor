@@ -3,7 +3,9 @@ Replaces original Tuya firmware on door sensors with battery and ESP8266 wifi mo
 * TYMC-1 Earykong (oval shaped door sensor)
 
 The sensor can be purchased on AliExpress for example
+
 ![Flashing connection](https://github.com/klausahrenberg/WDoorSensor/blob/master/docs/images/doorsensor.jpg)
+
 ## Features
 * No Tuya cloud connection anymore
 * Enables sensor to send door and battery state via MQTT 
