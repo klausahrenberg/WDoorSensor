@@ -11,7 +11,7 @@ I was not able to flash the firmware via tuya-convert. So I did the wired way.
 * Connections VCC, GND and GPIO0 have to be soldered directly to the module
 * Don't insert the batteries during flashing, then the module can't be flashed
 
-![Flashing connection](https://raw.githubusercontent.com/klausahrenberg/TDoorSensor/master/docs/images/flash_wiring.jpg)
+![Flashing connection](https://github.com/klausahrenberg/WDoorSensor/blob/master/docs/images/flash_wiring.jpg)
 
 ## 2. Connections for flashing
 Following connections were working for me (refer to ESP-12E pinout):
