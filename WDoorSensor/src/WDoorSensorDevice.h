@@ -24,7 +24,7 @@ class WDoorSensorDevice: public WDevice {
 public:
 
     WDoorSensorDevice(WNetwork* network)
-    	: WDevice(network, "thermostat", "thermostat", DEVICE_TYPE_THERMOSTAT) {
+    	: WDevice(network, "sensor", "sensor", DEVICE_TYPE_DOOR_SENSOR) {
 			this->open = new WProperty("open", "Open", BOOLEAN, TYPE_OPEN_PROPERTY);
       this->open->setReadOnly(true);
 	    this->addProperty(open);
