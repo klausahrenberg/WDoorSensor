@@ -4,7 +4,7 @@
 #include "WStringStream.h"
 
 #define APPLICATION "Door Window Sensor"
-#define VERSION "1.18"
+#define VERSION "1.20"
 #define FLAG_SETTINGS 0x17
 #define DEBUG false
 
@@ -14,18 +14,25 @@ WDoorSensorDevice* dsDevice;
 void setup() {
 	Serial.begin(9600);
 	//Wifi and Mqtt connection
-	network = new WNetwork(DEBUG, APPLICATION, VERSION, false, NO_LED, FLAG_SETTINGS);
+	network = new WNetwork(DEBUG, APPLICATION, VERSION, NO_LED, FLAG_SETTINGS);
 	network->setSupportingWebThing(false);
 	network->setOnNotify([]() {
 		if (network->isWifiConnected()) {
 			//nothing to do
 		}
 		if (network->isMqttConnected()) {
-			dsDevice->queryState();
+			if (dsDevice->isDeviceStateComplete()) {
+				network->debug(F("state complete"));
+			} else {
+				network->debug(F("state not complete"));
+					dsDevice->queryDeviceState();
+			}
+
 		}
 	});
 	network->setOnConfigurationFinished([]() {
 		//Switch blinking thermostat in normal operating mode back
+		network->debug(F("cancel config"));
 		dsDevice->cancelConfiguration();
 	});
 	//Communication between ESP and MCU
