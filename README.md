@@ -1,4 +1,7 @@
 # WDoorSensor
+
+[![GitHub version](https://img.shields.io/github/release/klausahrenberg/WDoorSensor.svg)](https://github.com/klausahrenberg/WDoorSensor/releases/latest)
+
 Replaces original Tuya firmware on door sensors with battery and ESP8266 wifi module. The firmware is tested with following device:
 * TYMC-1 Earykong (oval shaped door sensor)
 
