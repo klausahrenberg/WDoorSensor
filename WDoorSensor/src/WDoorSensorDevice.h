@@ -23,6 +23,7 @@ public:
 
   WDoorSensorDevice(WNetwork* network)
   	: WTuyaDevice(network, "sensor", "sensor", DEVICE_TYPE_DOOR_SENSOR) {
+    this->usingCommandQueue = false;
 		this->open = new WProperty("open", "Open", BOOLEAN, TYPE_OPEN_PROPERTY);
     this->open->setReadOnly(true);
 	  this->addProperty(open);
@@ -34,6 +35,7 @@ public:
     this->addProperty(battery);
     this->configButtonPressed = false;
     this->notifyAllMcuCommands->setBoolean(false);
+    this->wasClosedWithoutMqttConnection = false;
   }
 
   bool isDeviceStateComplete() {
@@ -55,6 +57,10 @@ public:
       cancelConfiguration();
     }
     WTuyaDevice::loop(now);
+    if ((wasClosedWithoutMqttConnection) && (network->isInitialMqttSent())) {
+      this->open->setBoolean(false);
+      wasClosedWithoutMqttConnection = false;
+    }
   }
 
   void commandTuyaToSerial(byte commandByte) {
@@ -118,7 +124,12 @@ public:
         if (length == 5) {
           if ((receivedCommand[6] == 1) && (receivedCommand[7] == 1)) {
             //door state
-            this->open->setBoolean(receivedCommand[10] == 0x01);
+            bool isOpen = (receivedCommand[10] == 0x01);
+            if ((network->isInitialMqttSent()) || (isOpen) || (this->open->isNull())) {
+              this->open->setBoolean(isOpen);
+            } else if (!isOpen) {
+              wasClosedWithoutMqttConnection = true;
+            }
             knownCommand = true;
           } else if ((receivedCommand[6] == 3) && (receivedCommand[7] == 4)) {
             //battery state
@@ -141,6 +152,7 @@ private:
   bool configButtonPressed;
 	WProperty* open;
   WProperty* battery;
+  bool wasClosedWithoutMqttConnection;
 
 };
 
