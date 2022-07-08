@@ -4,7 +4,7 @@
 #include "WStringStream.h"
 
 #define APPLICATION "Door Window Sensor"
-#define VERSION "1.23"
+#define VERSION "1.25"
 #define FLAG_SETTINGS 0x22
 #define DEBUG false
 
