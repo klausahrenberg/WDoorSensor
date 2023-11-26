@@ -25,16 +25,16 @@ public:
   	: WTuyaDevice(network, "sensor", "sensor", DEVICE_TYPE_DOOR_SENSOR) {
     this->usingCommandQueue = false;
 		this->open = new WProperty("open", "Open", BOOLEAN, TYPE_OPEN_PROPERTY);
-    this->open->setReadOnly(true);
+    this->open->readOnly(true);
 	  this->addProperty(open);
     this->battery = new WProperty("battery", "Battery", STRING, "");
     this->battery->addEnumString(BATTERY_LOW);
     this->battery->addEnumString(BATTERY_MEDIUM);
     this->battery->addEnumString(BATTERY_HIGH);
-    this->battery->setReadOnly(true);
+    this->battery->readOnly(true);
     this->addProperty(battery);
     this->configButtonPressed = false;
-    this->notifyAllMcuCommands->setBoolean(false);
+    this->notifyAllMcuCommands->asBool(false);
     this->wasClosedWithoutMqttConnection = false;
   }
 
@@ -57,8 +57,8 @@ public:
       cancelConfiguration();
     }
     WTuyaDevice::loop(now);
-    if ((wasClosedWithoutMqttConnection) && (network->isInitialMqttSent())) {
-      this->open->setBoolean(false);
+    if ((wasClosedWithoutMqttConnection) && (network()->isInitialMqttSent())) {
+      this->open->asBool(false);
       wasClosedWithoutMqttConnection = false;
     }
   }
@@ -77,7 +77,7 @@ public:
 
   void queryDeviceState() {
     if (!this->configButtonPressed) {
-      network->debug(F("Query state of MCU..."));
+      network()->debug(F("Query state of MCU..."));
       commandTuyaToSerial(0x01);
     }
   }
@@ -107,14 +107,14 @@ public:
         //Button was pressed > 5 sec - red blinking led
         //55 aa 00 03 00 00
         this->configButtonPressed = true;
-        network->debug(F("Config button pressed..."));
+        network()->debug(F("Config button pressed..."));
         knownCommand = true;
         break;
       }
       case 0x04: {
         //Setup initialization request
         //55 aa 00 04 00 01 00
-        network->startWebServer();
+        network()->startWebServer();
         knownCommand = true;
         break;
       }
@@ -125,15 +125,15 @@ public:
           if ((receivedCommand[6] == 1) && (receivedCommand[7] == 1)) {
             //door state
             bool isOpen = (receivedCommand[10] == 0x01);
-            if ((network->isInitialMqttSent()) || (isOpen) || (this->open->isNull())) {
-              this->open->setBoolean(isOpen);
+            if ((network()->isInitialMqttSent()) || (isOpen) || (this->open->isNull())) {
+              this->open->asBool(isOpen);
             } else if (!isOpen) {
               wasClosedWithoutMqttConnection = true;
             }
             knownCommand = true;
           } else if ((receivedCommand[6] == 3) && (receivedCommand[7] == 4)) {
             //battery state
-            battery->setString(battery->getEnumString(receivedCommand[10]));
+            battery->asString(battery->enumString(receivedCommand[10]));
             knownCommand = true;
           }
         }

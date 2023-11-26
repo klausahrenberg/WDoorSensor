@@ -4,7 +4,7 @@
 #include "WStringStream.h"
 
 #define APPLICATION "Door Window Sensor"
-#define VERSION "1.25"
+#define VERSION "1.38"
 #define FLAG_SETTINGS 0x22
 #define DEBUG false
 
@@ -15,7 +15,7 @@ void setup() {
 	Serial.begin(9600);
 	//Wifi and Mqtt connection
 	network = new WNetwork(DEBUG, APPLICATION, VERSION, NO_LED, FLAG_SETTINGS, nullptr);
-	network->setSupportingWebThing(false);
+	network->setSupportsWebServer(false);
 	network->setLastWillEnabled(false);
 	network->setOnNotify([]() {
 		if (network->isWifiConnected()) {
