@@ -5,7 +5,7 @@
 
 #define APPLICATION "Door Window Sensor"
 #define VERSION "1.38"
-#define FLAG_SETTINGS 0x22
+#define FLAG_SETTINGS 0x12
 #define DEBUG false
 
 WNetwork* network;
